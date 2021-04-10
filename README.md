@@ -1,3 +1,3 @@
 # FDJTest-MVP
 
-![alt text](arch_mvp_clean.pdf)
+![image](arch_mvp_clean.pdf)
