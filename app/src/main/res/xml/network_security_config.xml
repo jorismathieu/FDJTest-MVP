@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+
+    <base-config>
+        <!-- Allow all certificates so we can use Charles proxy (debug ONLY) -->
+        <trust-anchors>
+            <certificates src="system"/>
+            <certificates src="user"/>
+        </trust-anchors>
+    </base-config>
+
+</network-security-config>

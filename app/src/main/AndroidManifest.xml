@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.joris.fdj">
 
-    <application android:name=".FDJApplication" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".FDJApplication"
+        android:networkSecurityConfig="@xml/network_security_config" />
 
 </manifest>
