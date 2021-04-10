@@ -1,3 +1,4 @@
 # FDJTest-MVP
 
-![image](arch_mvp_clean.pdf)
+![GitHub Logo](arch_diagram.png)
+Format: ![Alt Text](url)
