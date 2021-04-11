@@ -1,10 +1,15 @@
 # FDJTest-MVP
 
 Architecture : MVP en respectant les principes de clean archi
+
 4 modules : app / business (kotlin) / data (kotlin) / presentation
+
 Le module business ne dépend de rien
+
 Le module data ne dépend que de business
+
 Le module presentation ne dépend que de business
+
 Le module app fait juste le lien entre le tout pour l'injection des dépendances
 
 ![Arch diagram](arch_diagram.png)
