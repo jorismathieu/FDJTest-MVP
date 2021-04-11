@@ -1,9 +1,12 @@
 package com.joris.presentation.di
 
 import com.joris.business.gateway.LogguerGateway
-import com.joris.business.usecase.GetTeamsFromLeagueUseCase
-import com.joris.business.usecase.GetTeamsFromLeagueUseCaseImpl
-import com.joris.presentation.gateways.LogguerGatewayImpl
+import com.joris.business.usecase.*
+import com.joris.presentation.gateway.LogguerGatewayImpl
+import com.joris.presentation.presenter.MainNavigationPresenter
+import com.joris.presentation.presenter.MainNavigationPresenterImpl
+import com.joris.presentation.presenter.SearchPresenter
+import com.joris.presentation.presenter.SearchPresenterImpl
 import org.koin.dsl.module
 
 val presentationModule = module {
@@ -12,5 +15,11 @@ val presentationModule = module {
     single<LogguerGateway> {LogguerGatewayImpl()}
 
     // Use cases
+    single<MainNavigationUseCase> { MainNavigationUseCaseImpl() }
     factory<GetTeamsFromLeagueUseCase> { GetTeamsFromLeagueUseCaseImpl(get(), get()) }
+    factory<GetTeamDetailsUseCase> { GetTeamDetailsUseCaseImpl(get(), get()) }
+
+    // Presenters
+    factory<MainNavigationPresenter> { params -> MainNavigationPresenterImpl(params[0], get()) }
+    factory<SearchPresenter> { params -> SearchPresenterImpl(params[0], get(), get()) }
 }

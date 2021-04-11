@@ -5,7 +5,7 @@ enum class CriticalErrorCode{
     INTERNAL
 }
 
-abstract class UseCaseOutput<Type> {
+abstract class SuspendUseCaseOutput<Type> {
     abstract val criticalError: CriticalErrorCode?
     abstract val data: Type
 

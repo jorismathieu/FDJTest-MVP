@@ -1,4 +1,4 @@
-package com.joris.presentation.gateways
+package com.joris.presentation.gateway
 
 import android.util.Log
 import com.joris.business.gateway.LogguerGateway

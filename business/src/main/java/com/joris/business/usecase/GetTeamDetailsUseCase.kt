@@ -5,7 +5,7 @@ import com.joris.business.gateway.LogguerGateway
 import com.joris.business.repository.TeamRepository
 import com.joris.business.usecase.base.CriticalErrorCode
 import com.joris.business.usecase.base.SuspendUseCase
-import com.joris.business.usecase.base.UseCaseOutput
+import com.joris.business.usecase.base.SuspendUseCaseOutput
 
 interface GetTeamDetailsUseCase :
     SuspendUseCase<GetTeamDetailsUseCase.Input, GetTeamDetailsUseCase.Output> {
@@ -15,7 +15,7 @@ interface GetTeamDetailsUseCase :
     class Output(
         override val criticalError: CriticalErrorCode? = null,
         override val data: Team? = null
-    ) : UseCaseOutput<Team?>()
+    ) : SuspendUseCaseOutput<Team?>()
 
     override suspend fun execute(input: Input): Output
 }

@@ -35,6 +35,6 @@ class TeamRemoteDataSourceImpl : TeamRemoteDataSource {
 
     @Throws(Throwable::class)
     override suspend fun getTeamDetails(league: String): Team? {
-        return sportApi.getTeamsFromLeague(String(league.toByteArray(), Charsets.UTF_8))?.teams?.get(0)
+        return sportApi.getTeamDetails(String(league.toByteArray(), Charsets.UTF_8))?.teams?.get(0)
     }
 }
