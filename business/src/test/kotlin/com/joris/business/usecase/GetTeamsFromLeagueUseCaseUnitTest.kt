@@ -24,7 +24,7 @@ class GetTeamsFromLeagueUseCaseUnitTest {
                 object : LogguerGateway {})
                 .execute(
                     GetTeamsFromLeagueUseCase.Input(
-                        league = ""
+                        league = "Test"
                     )
                 )
 
@@ -48,7 +48,7 @@ class GetTeamsFromLeagueUseCaseUnitTest {
                 object : LogguerGateway {})
                 .execute(
                     GetTeamsFromLeagueUseCase.Input(
-                        ""
+                        "Test"
                     )
                 )
 
@@ -73,6 +73,30 @@ class GetTeamsFromLeagueUseCaseUnitTest {
                     GetTeamsFromLeagueUseCase.Input(
                         // We send null as league = error
                         league = null
+                    )
+                )
+
+            // Check errors
+            Assert.assertEquals(true, output.containsCriticalError())
+            Assert.assertEquals(CriticalErrorCode.INTERNAL, output.criticalError)
+        }
+    }
+
+    @Test
+    fun test_internalErrorWhenLeagueIsEmpty() {
+        runBlocking {
+            // Call
+            val output = GetTeamsFromLeagueUseCaseImpl(
+                getTeamRepositoryMock(
+                    getTeamsFromLeagueLambda = {
+                        throw Exception()
+                    }
+                ),
+                object : LogguerGateway {})
+                .execute(
+                    GetTeamsFromLeagueUseCase.Input(
+                        // We send null as league = error
+                        league = ""
                     )
                 )
 
@@ -111,7 +135,7 @@ class GetTeamsFromLeagueUseCaseUnitTest {
                 object : LogguerGateway {})
                 .execute(
                     GetTeamsFromLeagueUseCase.Input(
-                        league = ""
+                        league = "Test"
                     )
                 )
 

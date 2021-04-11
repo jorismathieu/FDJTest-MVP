@@ -12,10 +12,15 @@ import kotlin.coroutines.CoroutineContext
  * Interface to communicate with the view
  */
 interface SearchPresenter {
+
+    // We could also use any sort of observables
     interface View {
-        fun onInternalErrorReceived()
-        fun onDataAccessErrorReceived()
-        fun onTeamListChanged(teams: List<Team>)
+        fun onShowError()
+        fun onHideError()
+        fun onShowProgressBar()
+        fun onHideProgressBar()
+        fun onShowContent(teams: List<Team>)
+        fun onHideContent()
     }
 
     fun onLeagueNameSubmitted(league: String?)
@@ -39,19 +44,21 @@ class SearchPresenterImpl(
     override val coroutineContext: CoroutineContext = job + Dispatchers.IO
 
     override fun onLeagueNameSubmitted(league: String?) {
-
+        view.onShowProgressBar()
+        view.onHideError()
+        view.onHideContent()
         launch {
             val output =
                 getTeamsFromLeagueUseCase.execute(GetTeamsFromLeagueUseCase.Input(league = league))
 
             withContext(Dispatchers.Main) {
+                view.onHideProgressBar()
                 if (output.containsCriticalError()) {
-                    when (output.criticalError) {
-                        CriticalErrorCode.DATA_ACCESS -> view.onDataAccessErrorReceived()
-                        CriticalErrorCode.INTERNAL -> view.onInternalErrorReceived()
-                    }
+                    view.onShowError()
+                    view.onHideContent()
                 } else {
-                    view.onTeamListChanged(output.data)
+                    view.onShowContent(output.data)
+                    view.onHideError()
                 }
             }
         }
@@ -66,11 +73,6 @@ class SearchPresenterImpl(
     }
 
     override fun cleanup() {
-        cancelJob()
-    }
-
-    private fun cancelJob() {
         job.cancel()
     }
-
 }

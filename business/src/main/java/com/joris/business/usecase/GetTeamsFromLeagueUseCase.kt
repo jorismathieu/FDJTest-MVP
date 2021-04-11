@@ -28,11 +28,13 @@ class GetTeamsFromLeagueUseCaseImpl(
     override suspend fun execute(input: GetTeamsFromLeagueUseCase.Input): GetTeamsFromLeagueUseCase.Output {
         try {
             input.league?.let { league ->
-                val teams = teamRepository.getTeamsFromLeague(league = league)
-                teams?.let {
-                    return GetTeamsFromLeagueUseCase.Output(data = it)
-                } ?: run {
-                    return GetTeamsFromLeagueUseCase.Output(criticalError = CriticalErrorCode.DATA_ACCESS)
+                if (league.isNotEmpty()) {
+                    val teams = teamRepository.getTeamsFromLeague(league = league)
+                    teams?.let {
+                        return GetTeamsFromLeagueUseCase.Output(data = it)
+                    } ?: run {
+                        return GetTeamsFromLeagueUseCase.Output(criticalError = CriticalErrorCode.DATA_ACCESS)
+                    }
                 }
             }
             return GetTeamsFromLeagueUseCase.Output(criticalError = CriticalErrorCode.INTERNAL)

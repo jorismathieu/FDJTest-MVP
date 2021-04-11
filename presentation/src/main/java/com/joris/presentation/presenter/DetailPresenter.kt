@@ -2,24 +2,26 @@ package com.joris.presentation.presenter
 
 import com.joris.business.entity.Team
 import com.joris.business.usecase.GetTeamDetailsUseCase
-import com.joris.business.usecase.base.CriticalErrorCode
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-/**
- * Interface to communicate with the view
- */
 interface DetailsPresenter {
+
+    // We could also use any sort of observables
     interface View {
-        fun onError()
-        fun onSuccess(team: Team)
+        fun onShowError()
+        fun onHideError()
+        fun onShowProgressBar()
+        fun onHideProgressBar()
+        fun onShowContent(team: Team)
+        fun onHideContent()
     }
 
     fun getTeamDetails(teamName: String?)
 
     fun cleanup()
 
-    // We could add saveState and restoreState methods if needed
+    // We can add saveState and restoreState methods if needed
 }
 
 class DetailsPresenterImpl(
@@ -33,18 +35,25 @@ class DetailsPresenterImpl(
     override val coroutineContext: CoroutineContext = job + Dispatchers.IO
 
     override fun getTeamDetails(teamName: String?) {
+        view.onShowProgressBar()
+        view.onHideError()
+        view.onHideContent()
         launch {
             val output =
                 getTeamDetailsUseCase.execute(GetTeamDetailsUseCase.Input(teamName = teamName))
 
             withContext(Dispatchers.Main) {
+                view.onHideProgressBar()
                 if (output.containsCriticalError()) {
-                    view.onError()
+                    view.onShowError()
+                    view.onHideContent()
                 } else {
                     output.data?.let {
-                        view.onSuccess(it)
+                        view.onShowContent(it)
+                        view.onHideError()
                     } ?: run {
-                        view.onError()
+                        view.onShowError()
+                        view.onHideContent()
                     }
                 }
             }
@@ -52,10 +61,6 @@ class DetailsPresenterImpl(
     }
 
     override fun cleanup() {
-        cancelJob()
-    }
-
-    private fun cancelJob() {
         job.cancel()
     }
 

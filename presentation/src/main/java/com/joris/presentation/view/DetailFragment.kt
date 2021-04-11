@@ -51,12 +51,27 @@ class DetailFragment : Fragment(), DetailsPresenter.View {
         searchPresenter.getTeamDetails(arguments?.getString("teamName", null))
     }
 
-    override fun onError() {
-        showError()
+    override fun onShowError() {
+        errorMessage.visibility = View.VISIBLE
     }
 
-    override fun onSuccess(team: Team) {
-        showContent()
+    override fun onHideError() {
+        errorMessage.visibility = View.GONE
+    }
+
+    override fun onShowProgressBar() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun onHideProgressBar() {
+        progressBar.visibility = View.GONE
+    }
+
+    override fun onShowContent(team: Team) {
+        teamImage.visibility = View.VISIBLE
+        teamCountry.visibility = View.VISIBLE
+        teamLeague.visibility = View.VISIBLE
+        teamDescription.visibility = View.VISIBLE
 
         // TODO : Add progress while team banner is loading
         ImageDownloader.loadBitmapIntoImageView(teamImage, team.bannerImageUrl)
@@ -65,18 +80,7 @@ class DetailFragment : Fragment(), DetailsPresenter.View {
         teamDescription.text = team.description
     }
 
-    private fun showContent() {
-        errorMessage.visibility = View.GONE
-        progressBar.visibility = View.GONE
-        teamImage.visibility = View.VISIBLE
-        teamCountry.visibility = View.VISIBLE
-        teamLeague.visibility = View.VISIBLE
-        teamDescription.visibility = View.VISIBLE
-    }
-
-    private fun showError() {
-        errorMessage.visibility = View.VISIBLE
-        progressBar.visibility = View.GONE
+    override fun onHideContent() {
         teamImage.visibility = View.GONE
         teamCountry.visibility = View.GONE
         teamLeague.visibility = View.GONE
