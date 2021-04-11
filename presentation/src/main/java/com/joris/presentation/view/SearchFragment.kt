@@ -48,11 +48,7 @@ class SearchFragment : Fragment(), SearchPresenter.View {
 
     }
 
-    override fun onEmptyListReceived() {
-
-    }
-
-    override fun onTeamListReceived(teams: List<Team>) {
+    override fun onTeamListChanged(teams: List<Team>) {
         for (team in teams) {
             Log.e("Test", "team : $team")
         }

@@ -1,3 +1,5 @@
 <resources>
-
+    <dimen name="team_country_text_size">14sp</dimen>
+    <dimen name="team_league_text_size">20sp</dimen>
+    <dimen name="team_description_text_size">16sp</dimen>
 </resources>

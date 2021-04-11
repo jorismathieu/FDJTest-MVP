@@ -6,14 +6,20 @@ import java.lang.ref.WeakReference
 
 interface MainNavigationUseCase : ObservableUseCase<MainNavigationUseCase.ScreenChangeObserver> {
     interface ScreenChangeObserver {
+        fun switchToPreviousScreen()
         fun onScreenChange(screen: Screen, params: Map<String, String?>? = null)
     }
 
+    fun switchToPreviousScreen()
     fun switchToScreen(screen: Screen, params: Map<String, String?>? = null)
 }
 
 class MainNavigationUseCaseImpl : MainNavigationUseCase {
     private var screenChangeObserverWeakRef: WeakReference<MainNavigationUseCase.ScreenChangeObserver>? = null
+
+    override fun switchToPreviousScreen() {
+        screenChangeObserverWeakRef?.get()?.switchToPreviousScreen()
+    }
 
     override fun switchToScreen(screen: Screen, params: Map<String, String?>?) {
         screenChangeObserverWeakRef?.get()?.onScreenChange(screen, params)
