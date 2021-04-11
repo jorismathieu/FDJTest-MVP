@@ -5,6 +5,7 @@ import com.joris.business.entity.Team
 import com.joris.business.usecase.GetTeamsFromLeagueUseCase
 import com.joris.business.usecase.MainNavigationUseCase
 import kotlinx.coroutines.*
+import java.lang.ref.WeakReference
 
 /**
  * Interface to communicate with the view
@@ -31,20 +32,25 @@ interface SearchPresenter {
 }
 
 class SearchPresenterImpl(
-    private val view: SearchPresenter.View,
+    view: SearchPresenter.View,
     private val mainNavigationUseCase: MainNavigationUseCase,
     private val getTeamsFromLeagueUseCase: GetTeamsFromLeagueUseCase
 ) :
     SearchPresenter {
 
+    private var viewWeakRef: WeakReference<SearchPresenter.View>? = null
     private var job: Job? = null
+
+    init {
+        viewWeakRef = WeakReference(view)
+    }
 
     override fun onLeagueNameSubmitted(league: String?) {
         stopAnyBackgroundCoroutine()
 
-        view.onShowProgressBar()
-        view.onHideError()
-        view.onHideContent()
+        getView()?.onShowProgressBar()
+        getView()?.onHideError()
+        getView()?.onHideContent()
 
         // GlobalScope is a potential source of leak
         // One of the reason I prefer ViewModel and its ViewModelScope
@@ -53,13 +59,13 @@ class SearchPresenterImpl(
                 getTeamsFromLeagueUseCase.execute(GetTeamsFromLeagueUseCase.Input(league = league))
 
             withContext(Dispatchers.Main) {
-                view.onHideProgressBar()
+                getView()?.onHideProgressBar()
                 if (output.containsCriticalError()) {
-                    view.onShowError()
-                    view.onHideContent()
+                    getView()?.onShowError()
+                    getView()?.onHideContent()
                 } else {
-                    view.onShowContent(output.data)
-                    view.onHideError()
+                    getView()?.onShowContent(output.data)
+                    getView()?.onHideError()
                 }
             }
         }
@@ -79,5 +85,9 @@ class SearchPresenterImpl(
 
     private fun stopAnyBackgroundCoroutine() {
         job?.cancel()
+    }
+
+    private fun getView(): SearchPresenter.View? {
+        return viewWeakRef?.get()
     }
 }

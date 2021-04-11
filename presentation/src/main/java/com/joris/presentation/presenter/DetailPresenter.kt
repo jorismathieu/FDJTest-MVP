@@ -3,7 +3,7 @@ package com.joris.presentation.presenter
 import com.joris.business.entity.Team
 import com.joris.business.usecase.GetTeamDetailsUseCase
 import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
+import java.lang.ref.WeakReference
 
 interface DetailsPresenter {
 
@@ -25,19 +25,24 @@ interface DetailsPresenter {
 }
 
 class DetailsPresenterImpl(
-    private val view: DetailsPresenter.View,
+    view: DetailsPresenter.View,
     private val getTeamDetailsUseCase: GetTeamDetailsUseCase
 ) :
     DetailsPresenter {
 
+    private var viewWeakRef: WeakReference<DetailsPresenter.View>? = null
     private var job: Job? = null
+
+    init {
+        viewWeakRef = WeakReference(view)
+    }
 
     override fun getTeamDetails(teamName: String?) {
         stopAnyBackgroundCoroutine()
 
-        view.onShowProgressBar()
-        view.onHideError()
-        view.onHideContent()
+        getView()?.onShowProgressBar()
+        getView()?.onHideError()
+        getView()?.onHideContent()
 
         // GlobalScope is a potential source of leak
         // One of the reason I prefer ViewModel and its ViewModelScope
@@ -46,17 +51,17 @@ class DetailsPresenterImpl(
                 getTeamDetailsUseCase.execute(GetTeamDetailsUseCase.Input(teamName = teamName))
 
             withContext(Dispatchers.Main) {
-                view.onHideProgressBar()
+                getView()?.onHideProgressBar()
                 if (output.containsCriticalError()) {
-                    view.onShowError()
-                    view.onHideContent()
+                    getView()?.onShowError()
+                    getView()?.onHideContent()
                 } else {
                     output.data?.let {
-                        view.onShowContent(it)
-                        view.onHideError()
+                        getView()?.onShowContent(it)
+                        getView()?.onHideError()
                     } ?: run {
-                        view.onShowError()
-                        view.onHideContent()
+                        getView()?.onShowError()
+                        getView()?.onHideContent()
                     }
                 }
             }
@@ -69,6 +74,10 @@ class DetailsPresenterImpl(
 
     private fun stopAnyBackgroundCoroutine() {
         job?.cancel()
+    }
+
+    private fun getView(): DetailsPresenter.View? {
+        return viewWeakRef?.get()
     }
 
 }
