@@ -2,7 +2,7 @@ package com.joris.business.usecase
 
 import com.joris.business.entity.Team
 import com.joris.business.gateway.LogguerGateway
-import com.joris.business.repository.getTeamRepositoryMock
+import com.joris.business.mock.getTeamRepositoryMock
 import com.joris.business.usecase.base.CriticalErrorCode
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert

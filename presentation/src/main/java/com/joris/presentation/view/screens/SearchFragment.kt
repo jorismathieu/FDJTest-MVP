@@ -1,21 +1,26 @@
-package com.joris.presentation.view
+package com.joris.presentation.view.screens
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.joris.business.entity.Team
 import com.joris.fdj.R
 import com.joris.presentation.presenter.SearchPresenter
+import com.joris.presentation.view.list.RecyclerEventListener
+import com.joris.presentation.view.list.RecyclerEventType
+import com.joris.presentation.view.list.TeamAdapter
 import kotlinx.coroutines.*
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.inject
+import java.lang.Runnable
 
-class SearchFragment : Fragment(), SearchPresenter.View {
+
+class SearchFragment : Fragment(), SearchPresenter.View, RecyclerEventListener {
 
     private val searchPresenter: SearchPresenter by inject(
         clazz = SearchPresenter::class.java,
@@ -31,7 +36,6 @@ class SearchFragment : Fragment(), SearchPresenter.View {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
@@ -42,26 +46,42 @@ class SearchFragment : Fragment(), SearchPresenter.View {
         progressBar = view.findViewById(R.id.progress_bar)
         searchView = view.findViewById(R.id.search_view)
         recyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = GridLayoutManager(recyclerView.context, 2)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            private var runnable: Runnable? = null
+
+            private fun postSubmit(query: String?) {
+                runnable = Runnable { searchPresenter.onLeagueNameSubmitted(query) }
+                searchView.postDelayed(runnable, 1000) // We delay by 1 sec
+            }
+
+            private fun cancelSubmit() {
+                searchView.removeCallbacks(runnable)
+            }
+
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.e("Test", "onQueryTextSubmit : $query")
+                cancelSubmit()
                 searchPresenter.onLeagueNameSubmitted(query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                Log.e("Test", "onQueryTextChange : $newText")
-                searchPresenter.onLeagueNameSubmitted(newText)
+                cancelSubmit()
+                postSubmit(newText)
                 return true
             }
 
         })
     }
 
+    override fun onRecyclerItemClick(eventType: RecyclerEventType, teamName: String?) {
+        searchPresenter.onTeamSelected(teamName)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-
         searchPresenter.cleanup()
     }
 
@@ -82,10 +102,8 @@ class SearchFragment : Fragment(), SearchPresenter.View {
     }
 
     override fun onShowContent(teams: List<Team>) {
-        for (team in teams) {
-            Log.e("Test", "team : $team")
-        }
         recyclerView.visibility = View.VISIBLE
+        recyclerView.adapter = TeamAdapter(teams, this)
     }
 
     override fun onHideContent() {

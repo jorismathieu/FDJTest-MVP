@@ -28,17 +28,20 @@ class DetailsPresenterImpl(
     private val view: DetailsPresenter.View,
     private val getTeamDetailsUseCase: GetTeamDetailsUseCase
 ) :
-    DetailsPresenter,
-    CoroutineScope {
+    DetailsPresenter {
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext = job + Dispatchers.IO
+    private var job: Job? = null
 
     override fun getTeamDetails(teamName: String?) {
+        stopAnyBackgroundCoroutine()
+
         view.onShowProgressBar()
         view.onHideError()
         view.onHideContent()
-        launch {
+
+        // GlobalScope is a potential source of leak
+        // One of the reason I prefer ViewModel and its ViewModelScope
+        job = GlobalScope.launch {
             val output =
                 getTeamDetailsUseCase.execute(GetTeamDetailsUseCase.Input(teamName = teamName))
 
@@ -61,7 +64,11 @@ class DetailsPresenterImpl(
     }
 
     override fun cleanup() {
-        job.cancel()
+        stopAnyBackgroundCoroutine()
+    }
+
+    private fun stopAnyBackgroundCoroutine() {
+        job?.cancel()
     }
 
 }

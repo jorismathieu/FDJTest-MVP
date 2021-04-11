@@ -11,7 +11,7 @@ class TeamRepositoryImpl(private val teamRemoteDataSource: TeamRemoteDataSource)
     }
 
     override suspend fun getTeamDetails(teamName: String): Team? {
-        // Instead of a remote request, we could use some local cache to get team information
+        // Instead of a remote request (even if cached), we could use some local cache to get team information
         return teamRemoteDataSource.getTeamDetails(teamName)
     }
 }

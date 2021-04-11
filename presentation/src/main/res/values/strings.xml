@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">FDJ Test</string>
 
-    <string name="teams_error">Erreur, pas d\'équipe ou erreur réseau</string>
-    <string name="team_error">Erreur lors de la récupération des informations</string>
+    <string name="teams_error">Pas de contenu ou erreur réseau</string>
+    <string name="team_error">Pas de contenu ou erreur réseau</string>
 </resources>

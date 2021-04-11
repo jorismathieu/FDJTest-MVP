@@ -4,9 +4,7 @@ import com.joris.business.entity.Screen
 import com.joris.business.entity.Team
 import com.joris.business.usecase.GetTeamsFromLeagueUseCase
 import com.joris.business.usecase.MainNavigationUseCase
-import com.joris.business.usecase.base.CriticalErrorCode
 import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
 
 /**
  * Interface to communicate with the view
@@ -37,17 +35,20 @@ class SearchPresenterImpl(
     private val mainNavigationUseCase: MainNavigationUseCase,
     private val getTeamsFromLeagueUseCase: GetTeamsFromLeagueUseCase
 ) :
-    SearchPresenter,
-    CoroutineScope {
+    SearchPresenter {
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext = job + Dispatchers.IO
+    private var job: Job? = null
 
     override fun onLeagueNameSubmitted(league: String?) {
+        stopAnyBackgroundCoroutine()
+
         view.onShowProgressBar()
         view.onHideError()
         view.onHideContent()
-        launch {
+
+        // GlobalScope is a potential source of leak
+        // One of the reason I prefer ViewModel and its ViewModelScope
+        job = GlobalScope.launch {
             val output =
                 getTeamsFromLeagueUseCase.execute(GetTeamsFromLeagueUseCase.Input(league = league))
 
@@ -73,6 +74,10 @@ class SearchPresenterImpl(
     }
 
     override fun cleanup() {
-        job.cancel()
+        stopAnyBackgroundCoroutine()
+    }
+
+    private fun stopAnyBackgroundCoroutine() {
+        job?.cancel()
     }
 }

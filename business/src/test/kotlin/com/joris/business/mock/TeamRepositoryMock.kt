@@ -1,6 +1,7 @@
-package com.joris.business.repository
+package com.joris.business.mock
 
 import com.joris.business.entity.Team
+import com.joris.business.repository.TeamRepository
 
 fun getTeamRepositoryMock(
     getTeamsFromLeagueLambda: () -> List<Team>? = { throw Exception() },

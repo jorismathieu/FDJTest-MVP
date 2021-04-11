@@ -30,11 +30,11 @@ class TeamRemoteDataSourceImpl : TeamRemoteDataSource {
 
     @Throws(Throwable::class)
     override suspend fun getTeamsFromLeague(league: String): List<Team>? {
-        return sportApi.getTeamsFromLeague(String(league.toByteArray(), Charsets.UTF_8))?.teams
+        return sportApi.getTeamsFromLeague(league = String(league.toByteArray(), Charsets.UTF_8))?.teams
     }
 
     @Throws(Throwable::class)
     override suspend fun getTeamDetails(league: String): Team? {
-        return sportApi.getTeamDetails(String(league.toByteArray(), Charsets.UTF_8))?.teams?.get(0)
+        return sportApi.getTeamDetails(teamName = String(league.toByteArray(), Charsets.UTF_8))?.teams?.get(0)
     }
 }

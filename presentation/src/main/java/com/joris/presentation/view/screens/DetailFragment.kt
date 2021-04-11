@@ -1,4 +1,4 @@
-package com.joris.presentation.view
+package com.joris.presentation.view.screens
 
 import android.os.Bundle
 import android.util.Log
