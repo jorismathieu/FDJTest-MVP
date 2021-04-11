@@ -8,7 +8,7 @@ Technos utilisées :
 - Coroutines
 - Les libs classiques pour la vue
 
-![image](arch_mvp_clean.pdf)
+![Arch diagram](arch_diagram.png)
 
 Points d'améliorations possibles :
 - Faire le bonus de l'auto completion ;)
@@ -21,3 +21,4 @@ Points d'améliorations possibles :
   * On peut évidemment aussi ajouter des tests fonctionnels
 - Passer sur du MVVM, qui sur Android permet de ne pas trop de soucier des problèmes de cycle de vie, que ce soit pour l'observation ou les coroutines
 - Avec quelques tweaks, il est possible rendre les presenters totalement indépendants de la plateforme
+
