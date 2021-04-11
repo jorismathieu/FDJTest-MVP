@@ -9,4 +9,9 @@ class TeamRepositoryImpl(private val teamRemoteDataSource: TeamRemoteDataSource)
     override suspend fun getTeamsFromLeague(league: String): List<Team>? {
         return teamRemoteDataSource.getTeamsFromLeague(league)
     }
+
+    override suspend fun getTeamDetails(teamName: String): Team? {
+        // Instead of a remote request, we could use some local cache to get team information
+        return teamRemoteDataSource.getTeamDetails(teamName)
+    }
 }

@@ -4,6 +4,6 @@ import com.joris.business.entity.Team
 
 
 interface TeamRemoteDataSource {
-    @Throws(Throwable::class)
     suspend fun getTeamsFromLeague(league: String): List<Team>?
+    suspend fun getTeamDetails(league: String): Team?
 }

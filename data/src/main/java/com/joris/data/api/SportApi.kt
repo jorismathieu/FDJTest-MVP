@@ -16,5 +16,10 @@ internal interface SportApi {
     suspend fun getTeamsFromLeague(
         @Query("l") league: String
     ): TeamListResponse?
+
+    @GET("searchteams.php")
+    suspend fun getTeamDetails(
+        @Query("t") teamName: String
+    ): TeamListResponse?
     //endregion
 }
