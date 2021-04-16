@@ -6,6 +6,8 @@ import com.joris.business.usecase.*
 import com.joris.data.datasource.TeamRemoteDataSourceImpl
 import com.joris.data.datasource.base.TeamRemoteDataSource
 import com.joris.data.repository.TeamRepositoryImpl
+import com.joris.presentation.gateway.ImageGateway
+import com.joris.presentation.gateway.ImageGatewayImpl
 import com.joris.presentation.gateway.LogguerGatewayImpl
 import com.joris.presentation.presenter.*
 import org.koin.dsl.module
@@ -29,6 +31,7 @@ val appModule = module {
     // Presentation
     // Gateways
     single<LogguerGateway> { LogguerGatewayImpl() }
+    single<ImageGateway> { ImageGatewayImpl() }
     // Presenters
     factory<MainNavigationPresenter> { params -> MainNavigationPresenterImpl(params[0], get()) }
     factory<SearchPresenter> { params -> SearchPresenterImpl(params[0], get(), get()) }

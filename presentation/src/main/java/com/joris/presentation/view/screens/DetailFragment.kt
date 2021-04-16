@@ -1,7 +1,6 @@
 package com.joris.presentation.view.screens
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,18 +9,21 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.joris.business.entity.Team
 import com.joris.fdj.R
+import com.joris.presentation.gateway.ImageGateway
 import com.joris.presentation.presenter.DetailsPresenter
-import com.joris.presentation.presenter.SearchPresenter
-import com.joris.presentation.view.helper.ImageDownloader
+import com.joris.presentation.gateway.ImageGatewayImpl
 import org.koin.core.parameter.parametersOf
-import org.koin.java.KoinJavaComponent
 import org.koin.java.KoinJavaComponent.inject
 
 class DetailFragment : Fragment(), DetailsPresenter.View {
 
-    private val searchPresenter: DetailsPresenter by inject(
+    private val searchPresenter by inject(
         clazz = DetailsPresenter::class.java,
         parameters = { parametersOf(this@DetailFragment) })
+
+    private val imageGateway by inject(
+        clazz = ImageGateway::class.java,
+    )
 
     // TODO : DataBinding to avoid boilerplate
     private lateinit var errorMessage : View
@@ -74,7 +76,7 @@ class DetailFragment : Fragment(), DetailsPresenter.View {
         teamDescription.visibility = View.VISIBLE
 
         // TODO : Add progress while team banner is loading
-        ImageDownloader.loadBitmapIntoImageView(teamImage, team.bannerImageUrl)
+        imageGateway.loadImage(teamImage, team.bannerImageUrl)
         teamCountry.text = team.country
         teamLeague.text = team.league
         teamDescription.text = team.description
