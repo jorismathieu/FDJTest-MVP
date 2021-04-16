@@ -2,7 +2,6 @@ package com.joris.presentation.presenter
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.joris.business.entity.Screen
 import com.joris.business.usecase.GetTeamsFromLeagueUseCase
 import com.joris.business.usecase.MainNavigationUseCase
 import kotlinx.coroutines.*
@@ -96,8 +95,8 @@ class SearchPresenterImpl(
     }
 
     override fun onTeamSelected(teamName: String?) {
-        mainNavigationUseCase.switchToScreen(
-            Screen.DETAIL, hashMapOf(
+        mainNavigationUseCase.switchToTeamDetail(
+            hashMapOf(
                 Pair("teamName", teamName)
             )
         )

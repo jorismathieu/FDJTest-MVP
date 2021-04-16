@@ -46,32 +46,17 @@ class SearchFragment : Fragment(), SearchPresenter.View, RecyclerEventListener {
         recyclerView.layoutManager = GridLayoutManager(recyclerView.context, 2)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            private var runnable: Runnable? = null
-
-            private fun postSubmit(query: String?) {
-                runnable = Runnable { searchPresenter.onLeagueNameSubmitted(query) }
-                searchView.postDelayed(runnable, 1000) // We delay by 1 sec
-            }
-
-            private fun cancelSubmit() {
-                searchView.removeCallbacks(runnable)
-            }
-
-
             override fun onQueryTextSubmit(query: String?): Boolean {
-                cancelSubmit()
                 searchPresenter.onLeagueNameSubmitted(query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                cancelSubmit()
-                postSubmit(newText)
                 return true
             }
         })
 
-//        searchPresenter.onRestoreState(savedInstanceState)
+        searchPresenter.onRestoreState(savedInstanceState)
     }
 
     override fun onRecyclerItemClick(eventType: RecyclerEventType, teamName: String?) {
@@ -81,7 +66,7 @@ class SearchFragment : Fragment(), SearchPresenter.View, RecyclerEventListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-//        searchPresenter.onSaveState(outState)
+        searchPresenter.onSaveState(outState)
     }
 
     override fun onViewStateChanged(viewState: SearchPresenter.ViewState?) {

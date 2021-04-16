@@ -16,7 +16,6 @@ Le module app fait juste le lien entre le tout pour l'injection des dépendances
 
 Technos utilisées :
 - Koin : pour l'injection de dépendance, le code s'adaptera facilement à un autre SDK (Dagger, Hilt, Service locator "maison" etc...)
-- Android Navigation : pour la navigation
 - Retrofit/Okhttp/Gson : pour la partie data
 - Glide
 - Coroutines
