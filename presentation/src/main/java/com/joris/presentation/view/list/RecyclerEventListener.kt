@@ -1,9 +1,9 @@
 package com.joris.presentation.view.list
 
-enum class RecyclerEventType {
+internal enum class RecyclerEventType {
     OPEN
 }
 
-interface RecyclerEventListener {
+internal interface RecyclerEventListener {
     fun onRecyclerItemClick(eventType: RecyclerEventType, teamName: String?)
 }

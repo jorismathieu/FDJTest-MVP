@@ -15,7 +15,7 @@ import com.joris.presentation.gateway.ImageGatewayImpl
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.inject
 
-class DetailFragment : Fragment(), DetailsPresenter.View {
+internal class DetailFragment : Fragment(), DetailsPresenter.View {
 
     private val searchPresenter by inject(
         clazz = DetailsPresenter::class.java,

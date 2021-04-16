@@ -33,7 +33,7 @@ internal interface SportApi {
     //endregion
 }
 
-class TeamListResponse {
+internal class TeamListResponse {
     @SerializedName("teams")
     var teams: List<TeamImpl>? = null
 }

@@ -9,7 +9,7 @@ import com.joris.presentation.gateway.ImageGateway
 import com.joris.presentation.gateway.ImageGatewayImpl
 import org.koin.java.KoinJavaComponent
 
-class TeamAdapter(private val teams: List<Team>, private val recyclerEventListener: RecyclerEventListener) :
+internal class TeamAdapter(private val teams: List<Team>, private val recyclerEventListener: RecyclerEventListener) :
     RecyclerView.Adapter<TeamViewHolder>() {
 
     private val imageGateway by KoinJavaComponent.inject(
