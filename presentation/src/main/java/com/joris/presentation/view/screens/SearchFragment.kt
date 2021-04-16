@@ -8,7 +8,6 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.joris.business.entity.Team
 import com.joris.fdj.R
 import com.joris.presentation.presenter.SearchPresenter
 import com.joris.presentation.view.list.RecyclerEventListener
@@ -17,8 +16,6 @@ import com.joris.presentation.view.list.TeamAdapter
 import kotlinx.coroutines.*
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.inject
-import java.lang.Runnable
-
 
 class SearchFragment : Fragment(), SearchPresenter.View, RecyclerEventListener {
 
@@ -49,7 +46,6 @@ class SearchFragment : Fragment(), SearchPresenter.View, RecyclerEventListener {
         recyclerView.layoutManager = GridLayoutManager(recyclerView.context, 2)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
             private var runnable: Runnable? = null
 
             private fun postSubmit(query: String?) {
@@ -60,6 +56,7 @@ class SearchFragment : Fragment(), SearchPresenter.View, RecyclerEventListener {
             private fun cancelSubmit() {
                 searchView.removeCallbacks(runnable)
             }
+
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 cancelSubmit()
@@ -72,41 +69,31 @@ class SearchFragment : Fragment(), SearchPresenter.View, RecyclerEventListener {
                 postSubmit(newText)
                 return true
             }
-
         })
+
+//        searchPresenter.onRestoreState(savedInstanceState)
     }
 
     override fun onRecyclerItemClick(eventType: RecyclerEventType, teamName: String?) {
         searchPresenter.onTeamSelected(teamName)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        searchPresenter.cleanup()
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+//        searchPresenter.onSaveState(outState)
     }
 
-    override fun onShowError() {
-        errorMessage.visibility = View.VISIBLE
-    }
+    override fun onViewStateChanged(viewState: SearchPresenter.ViewState?) {
+        viewState?.let {
+            if (viewState.showError) errorMessage.visibility =
+                View.VISIBLE else errorMessage.visibility = View.GONE
+            if (viewState.showLoading) progressBar.visibility =
+                View.VISIBLE else progressBar.visibility = View.GONE
+            if (viewState.showList) recyclerView.visibility =
+                View.VISIBLE else recyclerView.visibility = View.GONE
 
-    override fun onHideError() {
-        errorMessage.visibility = View.GONE
-    }
-
-    override fun onShowProgressBar() {
-        progressBar.visibility = View.VISIBLE
-    }
-
-    override fun onHideProgressBar() {
-        progressBar.visibility = View.GONE
-    }
-
-    override fun onShowContent(teams: List<Team>) {
-        recyclerView.visibility = View.VISIBLE
-        recyclerView.adapter = TeamAdapter(teams, this)
-    }
-
-    override fun onHideContent() {
-        recyclerView.visibility = View.GONE
+            recyclerView.adapter = TeamAdapter(viewState.content, this)
+        }
     }
 }
