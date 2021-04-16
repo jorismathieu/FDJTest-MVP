@@ -24,8 +24,7 @@ internal class TeamAdapter(private val teams: List<Team>, private val recyclerEv
     override fun getItemCount() = teams.size
 
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
-        // TODO : Add progress while team banner is loading
-        imageGateway.loadImage(holder.teamImage, teams[position].badgeImageUrl)
+        imageGateway.loadImage(holder.teamImage, R.drawable.team_badge_placeholder, teams[position].badgeImageUrl)
 
         holder.itemView.setOnClickListener {
             recyclerEventListener.onRecyclerItemClick(RecyclerEventType.OPEN, teams[position].name)

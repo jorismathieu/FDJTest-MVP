@@ -75,8 +75,7 @@ internal class DetailFragment : Fragment(), DetailsPresenter.View {
         teamLeague.visibility = View.VISIBLE
         teamDescription.visibility = View.VISIBLE
 
-        // TODO : Add progress while team banner is loading
-        imageGateway.loadImage(teamImage, team.bannerImageUrl)
+        imageGateway.loadImage(teamImage, R.drawable.team_banner_placeholder, team.bannerImageUrl)
         teamCountry.text = team.country
         teamLeague.text = team.league
         teamDescription.text = team.description
