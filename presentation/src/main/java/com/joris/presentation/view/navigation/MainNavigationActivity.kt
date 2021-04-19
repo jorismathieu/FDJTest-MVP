@@ -14,7 +14,7 @@ import org.koin.java.KoinJavaComponent.inject
 /**
  * This is the unique activity of the app, its unique job is routing to the requested screen with Android Navigation
  */
-class MainNavigationActivity : AppCompatActivity(), MainNavigationPresenter.View {
+internal class MainNavigationActivity : AppCompatActivity(), MainNavigationPresenter.View {
 
     private val mainNavigationPresenter: MainNavigationPresenter by inject(
         clazz = MainNavigationPresenter::class.java,
