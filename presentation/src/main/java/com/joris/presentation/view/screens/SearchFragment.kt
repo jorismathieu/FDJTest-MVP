@@ -17,7 +17,7 @@ import kotlinx.coroutines.*
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.inject
 
-class SearchFragment : Fragment(), SearchPresenter.View, RecyclerEventListener {
+internal class SearchFragment : Fragment(), SearchPresenter.View, RecyclerEventListener {
 
     private val searchPresenter: SearchPresenter by inject(
         clazz = SearchPresenter::class.java,

@@ -8,16 +8,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.joris.fdj.R
+import com.joris.presentation.gateway.ImageGateway
 import com.joris.presentation.presenter.DetailsPresenter
-import com.joris.presentation.view.helper.ImageDownloader
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.inject
 
-class DetailFragment : Fragment(), DetailsPresenter.View {
+internal class DetailFragment : Fragment(), DetailsPresenter.View {
 
     private val detailsPresenter: DetailsPresenter by inject(
         clazz = DetailsPresenter::class.java,
         parameters = { parametersOf(this@DetailFragment) })
+
+    private val imageGateway by inject(
+        clazz = ImageGateway::class.java,
+    )
 
     // TODO : DataBinding to avoid boilerplate
     private lateinit var errorMessage: View
@@ -63,9 +67,9 @@ class DetailFragment : Fragment(), DetailsPresenter.View {
                 teamCountry.visibility = View.VISIBLE
                 teamLeague.visibility = View.VISIBLE
                 teamDescription.visibility = View.VISIBLE
-                // TODO : Add progress while team banner is loading
-                ImageDownloader.loadBitmapIntoImageView(
+                imageGateway.loadImage(
                     teamImage,
+                    R.drawable.team_banner_placeholder,
                     viewState.content?.bannerImageUrl
                 )
                 teamCountry.text = viewState.content?.country
