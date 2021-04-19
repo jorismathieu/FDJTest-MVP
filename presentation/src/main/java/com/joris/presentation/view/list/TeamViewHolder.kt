@@ -6,6 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.joris.fdj.R
 
 
-internal class TeamViewHolder(view: View): RecyclerView.ViewHolder(view) {
+class TeamViewHolder(view: View): RecyclerView.ViewHolder(view) {
     var teamImage : ImageView = view.findViewById(R.id.team_image)
 }
