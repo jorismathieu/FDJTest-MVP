@@ -23,4 +23,5 @@ dependencies {
     // Tests
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
+    testImplementation "com.squareup.okhttp3:mockwebserver:${versions.okhttp}"
 }

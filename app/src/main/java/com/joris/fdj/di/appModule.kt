@@ -3,6 +3,8 @@ package com.joris.fdj.di
 import com.joris.business.gateway.LogguerGateway
 import com.joris.business.repository.TeamRepository
 import com.joris.business.usecase.*
+import com.joris.data.api.ApiConfiguration
+import com.joris.data.api.SportApi
 import com.joris.data.datasource.TeamRemoteDataSourceImpl
 import com.joris.data.datasource.base.TeamRemoteDataSource
 import com.joris.data.repository.TeamRepositoryImpl
@@ -26,7 +28,9 @@ val appModule = module {
     // Repositories
     single<TeamRepository> { TeamRepositoryImpl(get()) }
     // Sources
-    single<TeamRemoteDataSource> { TeamRemoteDataSourceImpl() }
+    single<TeamRemoteDataSource> { TeamRemoteDataSourceImpl(get()) }
+    // Api configuration
+    single<ApiConfiguration> { SportApi.Companion }
 
     // Presentation
     // Gateways
