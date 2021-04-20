@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.joris.business.entity.Team
 
 
-internal data class TeamImpl(
+data class TeamImpl(
     @SerializedName("strTeam")
     override val name: String?,
 
