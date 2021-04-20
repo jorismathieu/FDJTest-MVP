@@ -2,6 +2,7 @@ package com.joris.data.datasource
 
 import com.joris.data.api.ApiConfiguration
 import com.joris.data.mock.TeamWebServiceMock
+import com.joris.data.mock.TeamWebServiceResponsesMock
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
@@ -23,7 +24,7 @@ class TeamRemoteDataSourceUnitTest {
     fun test_searchAllTeams() {
         runBlocking {
             val teamWebServiceMock =
-                TeamWebServiceMock("localhost", 37299, TeamWebServiceMock.Strategy.MOCK)
+                TeamWebServiceMock("localhost", 37299, TeamWebServiceResponsesMock.SEARCH_ALL_TEAMS_MOCK)
             teamWebServiceMock.start()
 
             val teamRemoteDataSource = TeamRemoteDataSourceImpl(apiConfiguration)
@@ -55,7 +56,7 @@ class TeamRemoteDataSourceUnitTest {
     fun test_searchAllTeams_empty() {
         runBlocking {
             val teamWebServiceMock =
-                TeamWebServiceMock("localhost", 37299, TeamWebServiceMock.Strategy.EMPTY)
+                TeamWebServiceMock("localhost", 37299, TeamWebServiceResponsesMock.SEARCH_ALL_TEAMS_EMPTY)
             teamWebServiceMock.start()
 
             val teamRemoteDataSource = TeamRemoteDataSourceImpl(apiConfiguration)
@@ -72,7 +73,7 @@ class TeamRemoteDataSourceUnitTest {
     fun test_searchAllTeams_parsingError() {
         runBlocking {
             val teamWebServiceMock =
-                TeamWebServiceMock("localhost", 37299, TeamWebServiceMock.Strategy.PARSING_ERROR)
+                TeamWebServiceMock("localhost", 37299, TeamWebServiceResponsesMock.SEARCH_ALL_TEAMS_PARSING_ERROR)
             teamWebServiceMock.start()
 
             val teamRemoteDataSource = TeamRemoteDataSourceImpl(apiConfiguration)
@@ -88,7 +89,7 @@ class TeamRemoteDataSourceUnitTest {
     fun test_searchAllTeams_error() {
         runBlocking {
             val teamWebServiceMock =
-                TeamWebServiceMock("localhost", 37299, TeamWebServiceMock.Strategy.ERROR)
+                TeamWebServiceMock("localhost", 37299, TeamWebServiceResponsesMock.SEARCH_ALL_TEAMS_ERROR)
             teamWebServiceMock.start()
 
             val teamRemoteDataSource = TeamRemoteDataSourceImpl(apiConfiguration)
@@ -107,7 +108,7 @@ class TeamRemoteDataSourceUnitTest {
     fun test_searchTeam() {
         runBlocking {
             val teamWebServiceMock =
-                TeamWebServiceMock("localhost", 37299, TeamWebServiceMock.Strategy.MOCK)
+                TeamWebServiceMock("localhost", 37299, TeamWebServiceResponsesMock.SEARCH_TEAMS_MOCK)
             teamWebServiceMock.start()
 
             val teamRemoteDataSource = TeamRemoteDataSourceImpl(apiConfiguration)
@@ -130,7 +131,7 @@ class TeamRemoteDataSourceUnitTest {
     fun test_searchTeam_empty() {
         runBlocking {
             val teamWebServiceMock =
-                TeamWebServiceMock("localhost", 37299, TeamWebServiceMock.Strategy.EMPTY)
+                TeamWebServiceMock("localhost", 37299, TeamWebServiceResponsesMock.SEARCH_TEAMS_EMPTY)
             teamWebServiceMock.start()
 
             val teamRemoteDataSource = TeamRemoteDataSourceImpl(apiConfiguration)
@@ -149,7 +150,7 @@ class TeamRemoteDataSourceUnitTest {
     fun test_searchTeam_parsingError() {
         runBlocking {
             val teamWebServiceMock =
-                TeamWebServiceMock("localhost", 37299, TeamWebServiceMock.Strategy.PARSING_ERROR)
+                TeamWebServiceMock("localhost", 37299, TeamWebServiceResponsesMock.SEARCH_TEAMS_PARSING_ERROR)
             teamWebServiceMock.start()
 
             val teamRemoteDataSource = TeamRemoteDataSourceImpl(apiConfiguration)
@@ -165,7 +166,7 @@ class TeamRemoteDataSourceUnitTest {
     fun test_searchTeam_error() {
         runBlocking {
             val teamWebServiceMock =
-                TeamWebServiceMock("localhost", 37299, TeamWebServiceMock.Strategy.ERROR)
+                TeamWebServiceMock("localhost", 37299, TeamWebServiceResponsesMock.SEARCH_TEAMS_ERROR)
             teamWebServiceMock.start()
 
             val teamRemoteDataSource = TeamRemoteDataSourceImpl(apiConfiguration)
